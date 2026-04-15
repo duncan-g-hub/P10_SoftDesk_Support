@@ -5,15 +5,10 @@ from accounts.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
+    # serializer qui permet de gerer l'affichage d'un user
     class Meta:
         model = User
         fields = ('id', 'username')
-
-
-class ProjectNameSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Project
-        fields = ('id', 'name')
 
 
 

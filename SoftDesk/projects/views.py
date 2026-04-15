@@ -32,3 +32,13 @@ class ContributorViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         project = Project.objects.get(pk=self.kwargs['project_pk'])
         serializer.save(project=project)
+
+    # project_pk est extrait par drf-nested-routers et placé dans self.kwargs
+    # self.kwargs = {
+    #     'project_pk': '1',  # extrait par drf-nested-routers
+    #     'pk': '3'           # extrait par DRF (id du contributeur)
+    # }
+    # C'est le même principe que self.request qui donne accès à la requête,
+    # ou self.action qui donne l'action en cours (list, retrieve, etc.)
+
+
