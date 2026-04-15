@@ -122,3 +122,14 @@ STATIC_URL = 'static/'
 
 # use custom user model
 AUTH_USER_MODEL = 'accounts.User'
+
+# parametre drf
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',  # remplacer AllowAny par IsAuthenticated pour gerer l'auth
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+}
