@@ -5,7 +5,6 @@ from projects.serializers import (ProjectListSerializer, ProjectDetailSerializer
                                   ContributorSerializer)
 
 
-
 class ProjectViewSet(viewsets.ModelViewSet):
     serializer_class = ProjectListSerializer
     serializer_detail_class = ProjectDetailSerializer
@@ -24,14 +23,11 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
 
 
-
-
 class ContributorViewSet(viewsets.ModelViewSet):
     serializer_class = ContributorSerializer
 
     def get_queryset(self):
         return Contributor.objects.filter(project_id=self.kwargs['project_pk'])
-
 
     def perform_create(self, serializer):
         project = Project.objects.get(pk=self.kwargs['project_pk'])

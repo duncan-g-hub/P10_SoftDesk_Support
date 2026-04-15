@@ -12,14 +12,13 @@ class Project(models.Model):
         ("IOS", "iOS"),
         ("ADR", "Android")
     ])
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='projects') # auteur du projet
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='projects')  # auteur du projet
     created_time = models.DateTimeField(auto_now_add=True)
 
 
-
 class Contributor(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='contributions') # contributeur d'un projet
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='contributors') # projet contribué
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='contributions')  # contributeur d'un projet
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='contributors')  # projet contribué
     created_time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
