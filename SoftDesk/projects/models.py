@@ -19,8 +19,8 @@ class Project(models.Model):
 
 class Contributor(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='contributions') # contributeur d'un projet
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='contributors') # projet contribués
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='contributors') # projet contribué
     created_time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('user', 'project')  # un user ne peut pas être contributeur plusieurs fois
+        unique_together = ('user', 'project')  # un user ne peut pas être contributeur plusieurs fois du meme projet
