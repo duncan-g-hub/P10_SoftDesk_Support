@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from datetime import date
 
 from accounts.models import User
 
@@ -15,7 +16,22 @@ class UserSerializer(serializers.ModelSerializer):
         # birth_date obligatoire
         if not self.partial and not data.get('birth_date'):
             raise serializers.ValidationError({"birth_date": "Ce champ est obligatoire."})
+
+        if not self.control_age(data.get('birth_date')):
+            raise serializers.ValidationError(
+                {"birth_date": "Vous devez avoir au moins 15 ans pour vous inscrire."})
         return data
+
+
+    def control_age(self, birth_date):
+        # gestion age minimum
+        if birth_date:
+            date_now = date.today()
+            age = date_now.year - birth_date.year - (
+                    (date_now.month, date_now.day) < (birth_date.month, birth_date.day))
+            if age < 15:
+                return False
+        return True
 
     def create(self, validated_data):
         # créer l'utilisateur en hachant le mdp
