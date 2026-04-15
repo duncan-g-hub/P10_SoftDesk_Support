@@ -4,7 +4,7 @@ from accounts.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
-    birth_date = serializers.DateField(format='%d/%m/%Y')
+    birth_date = serializers.DateField(format='%d/%m/%Y', input_formats=['%d/%m/%Y'])
     password = serializers.CharField(write_only=True)
 
     class Meta:
@@ -13,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         # birth_date obligatoire
-        if not data.get('birth_date'):
+        if not self.partial and not data.get('birth_date'):
             raise serializers.ValidationError({"birth_date": "Ce champ est obligatoire."})
         return data
 
