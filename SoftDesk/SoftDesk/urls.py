@@ -16,17 +16,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework import routers
+from rest_framework_nested import routers #drf-nested-routers pour gestion des urls imbriqués
 
 from accounts.views import UserViewSet
 from projects.views import ProjectViewSet, ContributorViewSet
 
-router = routers.SimpleRouter()
-router.register('user', UserViewSet, basename='user')
-router.register('project', ProjectViewSet, basename='project')
-router.register('contributor', ContributorViewSet, basename='contributor')
+router = routers.DefaultRouter()
+router.register('users', UserViewSet, basename='user') #router de base
+router.register('projects', ProjectViewSet, basename='project') #router de base
+project_router = routers.NestedSimpleRouter(router, r'projects', lookup='project') # project router imbriqué
+project_router.register('contributors', ContributorViewSet, basename='contributor') # project router imbriqué avec contributor
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('api/', include(project_router.urls)),
 ]
