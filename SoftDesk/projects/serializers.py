@@ -5,10 +5,26 @@ from accounts.models import User
 
 
 
-class AuthorSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username')
+
+
+class ProjectNameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ('id', 'name')
+
+
+class ContributorSerializer(serializers.ModelSerializer):
+    created_time = serializers.DateTimeField(format='%d/%m/%Y %H:%M', read_only=True)
+    user = UserSerializer(read_only=True)
+    class Meta:
+        model = Contributor
+        fields = ('id', 'user', 'created_time')
+        read_only_fields = ('created_time', 'user')
+
 
 
 class ProjectListSerializer(serializers.ModelSerializer):
@@ -21,17 +37,15 @@ class ProjectListSerializer(serializers.ModelSerializer):
 
 class ProjectDetailSerializer(serializers.ModelSerializer):
     created_time = serializers.DateTimeField(format='%d/%m/%Y %H:%M', read_only=True)
-    author = AuthorSerializer(read_only=True)
-
+    author = UserSerializer(read_only=True)
+    contributors = ContributorSerializer(many=True, read_only=True)
     class Meta:
         model = Project
-        fields = ('id', 'name', 'description', 'type', 'author', 'created_time')
-        read_only_fields = ('author', 'created_time')
+        fields = ('id', 'name', 'description', 'type', 'author', 'created_time', 'contributors')
+        read_only_fields = ('author', 'created_time', 'contributors')
 
 
 
-class ContributorListSerializer(serializers.ModelSerializer):
-    pass
 
-class ContributorDetailSerializer(serializers.ModelSerializer):
-    pass
+
+

@@ -2,7 +2,7 @@ from rest_framework import viewsets
 
 from projects.models import Project, Contributor
 from projects.serializers import (ProjectListSerializer, ProjectDetailSerializer,
-                                  ContributorListSerializer, ContributorDetailSerializer)
+                                  ContributorSerializer)
 
 
 
@@ -20,12 +20,19 @@ class ProjectViewSet(viewsets.ModelViewSet):
         return super().get_serializer_class()
 
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        serializer.save(author=self.request.user, contributor=self.request.user)
 
 
 
 
 
 class ContributorViewSet(viewsets.ModelViewSet):
-    serializer_class = ProjectListSerializer
-    serializer_detail_class = ProjectDetailSerializer
+    serializer_class = ContributorSerializer
+
+    def get_queryset(self):
+        return Contributor.objects.filter(project_id=self.kwargs['project_pk'])
+
+
+    def perform_create(self, serializer):
+        project = Project.objects.get(pk=self.kwargs['project_pk'])
+        serializer.save(project=project)
