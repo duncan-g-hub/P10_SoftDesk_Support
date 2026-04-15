@@ -19,10 +19,12 @@ from django.urls import path, include
 from rest_framework import routers
 
 from accounts.views import UserViewSet
+from projects.views import ProjectViewSet, ContributorViewSet
 
 router = routers.SimpleRouter()
 router.register('user', UserViewSet, basename='user')
-
+router.register('project', ProjectViewSet, basename='project')
+router.register('contributor', ContributorViewSet, basename='contributor')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
