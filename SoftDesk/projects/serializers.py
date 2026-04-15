@@ -14,12 +14,13 @@ class UserSerializer(serializers.ModelSerializer):
 
 class ContributorSerializer(serializers.ModelSerializer):
     created_time = serializers.DateTimeField(format='%d/%m/%Y %H:%M', read_only=True)
-    user = UserSerializer(read_only=True)
+    user_detail = UserSerializer(source='user', read_only=True) # lecture : affiche id + username
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True) # écriture : attend un id
 
     class Meta:
         model = Contributor
-        fields = ('id', 'user', 'created_time')
-        read_only_fields = ('created_time', 'user')
+        fields = ('id', 'user', 'user_detail', 'created_time')
+        read_only_fields = ('created_time', 'user_detail')
 
 
 
