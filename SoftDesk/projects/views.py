@@ -13,7 +13,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
         return Project.objects.all()
 
     def get_serializer_class(self):
-        # on utilise le serilizer de detail si on veut modifier ou ajouter un projet
+        # on utilise le serializer de detail si on veut modifier ou ajouter un projet
         if self.action in ['retrieve', 'create', 'update', 'partial_update']:
             return self.serializer_detail_class
         return super().get_serializer_class()
