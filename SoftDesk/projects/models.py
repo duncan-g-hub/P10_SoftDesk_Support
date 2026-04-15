@@ -1,6 +1,6 @@
 from django.db import models
 
-from SoftDesk.accounts.models import User
+from accounts.models import User
 
 
 class Project(models.Model):
