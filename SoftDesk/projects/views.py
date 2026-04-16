@@ -1,11 +1,10 @@
 from rest_framework import viewsets
 
-from projects.models import Project, Contributor, Issue
+from projects.models import Project, Contributor, Issue, Comment
 from projects.serializers import (ProjectListSerializer, ProjectDetailSerializer,
                                   ContributorSerializer,
-                                  IssueListSerializer, IssueDetailSerializer)
-
-
+                                  IssueListSerializer, IssueDetailSerializer,
+                                  CommentSerializer)
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
@@ -24,7 +23,6 @@ class ProjectViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         project = serializer.save(author=self.request.user)
         Contributor.objects.create(user=self.request.user, project=project)
-
 
 
 class ContributorViewSet(viewsets.ModelViewSet):
@@ -46,7 +44,6 @@ class ContributorViewSet(viewsets.ModelViewSet):
     # ou self.action qui donne l'action en cours (list, retrieve, etc.)
 
 
-
 class IssueViewSet(viewsets.ModelViewSet):
     serializer_class = IssueListSerializer
     serializer_detail_class = IssueDetailSerializer
@@ -62,3 +59,14 @@ class IssueViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         project = Project.objects.get(pk=self.kwargs['project_pk'])
         serializer.save(author=self.request.user, project=project)
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    serializer_class = CommentSerializer
+
+    def get_queryset(self):
+        return Comment.objects.filter(issue_id=self.kwargs['issue_pk'])
+
+    def perform_create(self, serializer):
+        issue = Issue.objects.get(pk=self.kwargs['issue_pk'])
+        serializer.save(author=self.request.user, issue=issue)

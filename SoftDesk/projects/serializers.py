@@ -4,7 +4,6 @@ from projects.models import Project, Contributor, Issue, Comment
 from accounts.models import User
 
 
-
 class UserSerializer(serializers.ModelSerializer):
     # serializer qui permet de gerer l'affichage d'un user
     class Meta:
@@ -12,14 +11,10 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username')
 
 
-
-
-
-
 class ContributorSerializer(serializers.ModelSerializer):
     created_time = serializers.DateTimeField(format='%d/%m/%Y %H:%M', read_only=True)
-    user_detail = UserSerializer(source='user', read_only=True) # lecture : affiche id + username
-    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True) # écriture : attend un id
+    user_detail = UserSerializer(source='user', read_only=True)  # lecture : affiche id + username
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True)  # écriture : attend un id
 
     class Meta:
         model = Contributor
@@ -27,6 +22,14 @@ class ContributorSerializer(serializers.ModelSerializer):
         read_only_fields = ('created_time', 'user_detail')
 
 
+class CommentSerializer(serializers.ModelSerializer):
+    created_time = serializers.DateTimeField(format='%d/%m/%Y %H:%M', read_only=True)
+    author = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = ('id', 'uuid', 'description', 'created_time', 'author')
+        read_only_fields = ('created_time', 'author', 'uuid')
 
 
 class IssueListSerializer(serializers.ModelSerializer):
@@ -37,15 +40,18 @@ class IssueListSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'priority', 'tag', 'status', 'created_time')
 
 
-
 class IssueDetailSerializer(serializers.ModelSerializer):
     created_time = serializers.DateTimeField(format='%d/%m/%Y %H:%M', read_only=True)
     author = UserSerializer(read_only=True)
-    assigned_to_contributor = ContributorSerializer(source='assigned_to', read_only=True) # lecture : affiche id + username
-    assigned_to = serializers.PrimaryKeyRelatedField(queryset=Contributor.objects.all(), write_only=True) # écriture : attend un id
+    assigned_to_contributor = ContributorSerializer(source='assigned_to',
+                                                    read_only=True)  # lecture : affiche id + username
+    assigned_to = serializers.PrimaryKeyRelatedField(queryset=Contributor.objects.all(),
+                                                     write_only=True)  # écriture : attend un id
+    comments = CommentSerializer(many=True, read_only=True)
 
     def get_fields(self):
         # permet de filtrer le champs assigned_to pour ne retourner que les contributeurs du projet
+        # on recupere la view à partir du context généré automtiquement par DRF
         fields = super().get_fields()
         view = self.context.get('view')
         if view:
@@ -56,11 +62,8 @@ class IssueDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Issue
-        fields = ('id', 'name', 'description', 'priority', 'tag', 'status', 'created_time', 'author', 'assigned_to', 'assigned_to_contributor')
-
-
-
-
+        fields = ('id', 'name', 'description', 'priority', 'tag', 'status', 'created_time', 'author', 'assigned_to',
+                  'assigned_to_contributor', 'comments')
 
 
 class ProjectListSerializer(serializers.ModelSerializer):
@@ -78,8 +81,5 @@ class ProjectDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
-        fields = ('id', 'name', 'description', 'type', 'created_time', 'author',  'contributors', 'issues')
+        fields = ('id', 'name', 'description', 'type', 'created_time', 'author', 'contributors', 'issues')
         read_only_fields = ('author', 'created_time', 'contributors', 'issues')
-
-
-
