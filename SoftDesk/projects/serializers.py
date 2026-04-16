@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
-from projects.models import Project, Contributor
+from projects.models import Project, Contributor, Issue, Comment
 from accounts.models import User
+
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -9,6 +10,9 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username')
+
+
+
 
 
 
@@ -21,6 +25,41 @@ class ContributorSerializer(serializers.ModelSerializer):
         model = Contributor
         fields = ('id', 'user', 'user_detail', 'created_time')
         read_only_fields = ('created_time', 'user_detail')
+
+
+
+
+class IssueListSerializer(serializers.ModelSerializer):
+    created_time = serializers.DateTimeField(format='%d/%m/%Y %H:%M', read_only=True)
+
+    class Meta:
+        model = Issue
+        fields = ('id', 'name', 'priority', 'tag', 'status', 'created_time')
+
+
+
+class IssueDetailSerializer(serializers.ModelSerializer):
+    created_time = serializers.DateTimeField(format='%d/%m/%Y %H:%M', read_only=True)
+    author = UserSerializer(read_only=True)
+    assigned_to_contributor = ContributorSerializer(source='assigned_to', read_only=True) # lecture : affiche id + username
+    assigned_to = serializers.PrimaryKeyRelatedField(queryset=Contributor.objects.all(), write_only=True) # écriture : attend un id
+
+    def get_fields(self):
+        # permet de filtrer le champs assigned_to pour ne retourner que les contributeurs du projet
+        fields = super().get_fields()
+        view = self.context.get('view')
+        if view:
+            project_pk = view.kwargs.get('project_pk')
+            if project_pk:
+                fields['assigned_to'].queryset = Contributor.objects.filter(project_id=project_pk)
+        return fields
+
+    class Meta:
+        model = Issue
+        fields = ('id', 'name', 'description', 'priority', 'tag', 'status', 'created_time', 'author', 'assigned_to', 'assigned_to_contributor')
+
+
+
 
 
 
@@ -39,5 +78,8 @@ class ProjectDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
-        fields = ('id', 'name', 'description', 'type', 'author', 'created_time', 'contributors')
-        read_only_fields = ('author', 'created_time', 'contributors')
+        fields = ('id', 'name', 'description', 'type', 'created_time', 'author',  'contributors', 'issues')
+        read_only_fields = ('author', 'created_time', 'contributors', 'issues')
+
+
+

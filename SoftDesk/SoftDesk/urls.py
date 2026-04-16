@@ -19,13 +19,14 @@ from django.urls import path, include
 from rest_framework_nested import routers #drf-nested-routers pour gestion des urls imbriqués
 
 from accounts.views import UserViewSet
-from projects.views import ProjectViewSet, ContributorViewSet
+from projects.views import ProjectViewSet, ContributorViewSet, IssueViewSet
 
 router = routers.DefaultRouter()
 router.register('users', UserViewSet, basename='user') #router de base
 router.register('projects', ProjectViewSet, basename='project') #router de base
 project_router = routers.NestedSimpleRouter(router, r'projects', lookup='project') # project router imbriqué
 project_router.register('contributors', ContributorViewSet, basename='contributor') # project router imbriqué avec contributor
+project_router.register('issues', IssueViewSet, basename='issue') # project router imbriqué avec issue
 
 urlpatterns = [
     path('admin/', admin.site.urls),
