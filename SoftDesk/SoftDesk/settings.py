@@ -125,6 +125,9 @@ AUTH_USER_MODEL = 'accounts.User'
 
 # parametre drf
 REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination', # classe de pagination founie par DRF
+    'PAGE_SIZE': 2,  # clé pour définir le nombre d'élément à afficher par page
+
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',  # remplacer AllowAny par IsAuthenticated pour gerer l'auth
     ],
