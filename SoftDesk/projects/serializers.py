@@ -46,7 +46,10 @@ class IssueDetailSerializer(serializers.ModelSerializer):
     assigned_to_contributor = ContributorSerializer(source='assigned_to',
                                                     read_only=True)  # lecture : affiche id + username
     assigned_to = serializers.PrimaryKeyRelatedField(queryset=Contributor.objects.all(),
-                                                     write_only=True)  # écriture : attend un id
+                                                     write_only=True,
+                                                     required=False,
+                                                     allow_null=True
+                                                     )  # écriture : attend un id
     comments = CommentSerializer(many=True, read_only=True)
 
     def get_fields(self):
@@ -78,7 +81,7 @@ class ProjectDetailSerializer(serializers.ModelSerializer):
     created_time = serializers.DateTimeField(format='%d/%m/%Y %H:%M', read_only=True)
     author = UserSerializer(read_only=True)
     contributors = ContributorSerializer(many=True, read_only=True)
-
+    issues = IssueListSerializer(many=True, read_only=True)
     class Meta:
         model = Project
         fields = ('id', 'name', 'description', 'type', 'created_time', 'author', 'contributors', 'issues')
