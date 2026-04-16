@@ -25,7 +25,8 @@ class Contributor(models.Model):
     class Meta:
         unique_together = ('user', 'project')  # un user ne peut pas être contributeur plusieurs fois du meme projet
 
-
+    def __str__(self):
+        return f"{self.user.username} ({self.project.name})"
 
 class Issue(models.Model):
     name = models.CharField(max_length=100)
