@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework_nested import routers #drf-nested-routers pour gestion des urls imbriqués
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView # gestion d'obtention tokens
 
 from accounts.views import UserViewSet
 from projects.views import ProjectViewSet, ContributorViewSet, IssueViewSet, CommentViewSet
@@ -37,4 +38,6 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('api/', include(project_router.urls)),
     path('api/', include(issue_router.urls)),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
