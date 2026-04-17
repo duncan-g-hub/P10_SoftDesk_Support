@@ -7,10 +7,10 @@ from accounts.models import User
 class UserSerializer(serializers.ModelSerializer):
     birth_date = serializers.DateField(format='%d/%m/%Y', input_formats=['%d/%m/%Y'])
     password = serializers.CharField(write_only=True)
-
+    created_time = serializers.DateTimeField(format='%d/%m/%Y %H:%M', read_only=True)
     class Meta:
         model = User
-        fields = ('id', 'username', 'password', 'birth_date', 'can_be_contacted', 'can_data_be_shared')
+        fields = ('id', 'username', 'password', 'birth_date', 'can_be_contacted', 'can_data_be_shared', 'created_time')
 
     def validate(self, data):
         # birth_date obligatoire
@@ -45,3 +45,10 @@ class UserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         # mise à jour des autres champs
         return super().update(instance, validated_data)
+
+
+class PublicUserSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = User
+            fields = ('id', 'username',)
+            read_only_fields = ('id', 'username',)
