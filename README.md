@@ -15,7 +15,7 @@ Il s'agit d'une application permettant de remonter et de suivre des problèmes t
 - Suivi des problèmes (issues) avec priorité, balise et statut
 - Commentaires sur les issues (identifiés par UUID)
 - Pagination (5 éléments par page)
-- Permissions granulaires par rôle
+- Permissions par rôle
 
 ---
 
