@@ -184,7 +184,7 @@ Exemple de réponse :
 |---|---|---|---|
 | POST | `/api/users/` | Créer un compte | Non |
 | GET | `/api/users/` | Lister les utilisateurs | Oui |
-| GET | `/api/users/{id}/` | Détail d'un utilisateur | Oui |
+| GET | `/api/users/{id}/` | Détail d'un utilisateur | Oui (propriétaire) |
 | PUT/PATCH | `/api/users/{id}/` | Modifier son compte | Oui (propriétaire) |
 | DELETE | `/api/users/{id}/` | Supprimer son compte | Oui (propriétaire) |
 
