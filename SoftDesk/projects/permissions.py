@@ -26,10 +26,9 @@ class IsProjectAuthor(BasePermission):
 
 class IsProjectContributor(BasePermission):
     def has_permission(self, request, view):
-        # Lecture toujours autorisée
-        if request.method in ['GET', 'HEAD', 'OPTIONS']:
-            return True
-
-        # Écriture uniquement pour les contributeurs du projet
         project_pk = view.kwargs.get('project_pk')
+        # Pas de project_pk = on est sur /projects/ (list ou create)
+        if not project_pk:
+            return True
+        # Sinon (retrieve, update, delete, ou sous-ressources), contributor obligatoire
         return Contributor.objects.filter(project_id=project_pk, user=request.user).exists()

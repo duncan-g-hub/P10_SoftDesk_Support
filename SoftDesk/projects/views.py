@@ -15,7 +15,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, IsProjectContributor, IsAuthorOrReadOnly]
 
     def get_queryset(self):
-        return Project.objects.all()
+        return Project.objects.filter(contributors__user=self.request.user)
 
     def get_serializer_class(self):
         # on utilise le serializer de detail si on veut modifier ou ajouter un projet
