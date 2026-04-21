@@ -16,22 +16,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework_nested import routers #drf-nested-routers pour gestion des urls imbriqués
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView # gestion d'obtention tokens
+from rest_framework_nested import routers  # drf-nested-routers pour gestion des urls imbriqués
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView  # gestion d'obtention tokens
 
 from accounts.views import UserViewSet
 from projects.views import ProjectViewSet, ContributorViewSet, IssueViewSet, CommentViewSet
 
 router = routers.DefaultRouter()
-router.register('users', UserViewSet, basename='user') #router de base
-router.register('projects', ProjectViewSet, basename='project') #router de base
+router.register('users', UserViewSet, basename='user')  # router de base
+router.register('projects', ProjectViewSet, basename='project')  # router de base
 
-project_router = routers.NestedSimpleRouter(router, r'projects', lookup='project') # project router imbriqué
-project_router.register('contributors', ContributorViewSet, basename='contributor') # project router imbriqué avec contributor
-project_router.register('issues', IssueViewSet, basename='issue') # project router imbriqué avec issue
+project_router = routers.NestedSimpleRouter(router, r'projects', lookup='project')  # project router imbriqué
+project_router.register('contributors', ContributorViewSet,
+                        basename='contributor')  # project router imbriqué avec contributor
+project_router.register('issues', IssueViewSet, basename='issue')  # project router imbriqué avec issue
 
-issue_router = routers.NestedSimpleRouter(project_router, r'issues', lookup='issue') # issue router imbriqué
-issue_router.register('comments', CommentViewSet, basename='comment') # issue router imbriqué avec comment
+issue_router = routers.NestedSimpleRouter(project_router, r'issues', lookup='issue')  # issue router imbriqué
+issue_router.register('comments', CommentViewSet, basename='comment')  # issue router imbriqué avec comment
 
 urlpatterns = [
     path('admin/', admin.site.urls),

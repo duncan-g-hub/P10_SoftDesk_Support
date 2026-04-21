@@ -1,9 +1,8 @@
-from rest_framework import mixins, viewsets
+from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from accounts.models import User
 from accounts.serializers import UserSerializer, PublicUserSerializer
-
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -27,4 +26,3 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save()
-

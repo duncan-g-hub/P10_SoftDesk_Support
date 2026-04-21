@@ -16,7 +16,6 @@ class Project(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='projects')  # auteur du projet
 
 
-
 class Contributor(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='contributions')  # contributeur d'un projet
@@ -27,6 +26,7 @@ class Contributor(models.Model):
 
     def __str__(self):
         return f"{self.user.username} ({self.project.name})"
+
 
 class Issue(models.Model):
     name = models.CharField(max_length=100)
@@ -49,7 +49,8 @@ class Issue(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='issues')
-    assigned_to = models.ForeignKey(Contributor, on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_issues')
+    assigned_to = models.ForeignKey(Contributor, on_delete=models.SET_NULL, null=True, blank=True,
+                                    related_name='assigned_issues')
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='authored_issues')
 
 
@@ -60,5 +61,3 @@ class Comment(models.Model):
 
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE, related_name='comments')
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='authored_comments')
-
-

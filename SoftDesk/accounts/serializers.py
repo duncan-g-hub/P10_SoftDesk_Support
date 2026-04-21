@@ -8,6 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
     birth_date = serializers.DateField(format='%d/%m/%Y', input_formats=['%d/%m/%Y'])
     password = serializers.CharField(write_only=True)
     created_time = serializers.DateTimeField(format='%d/%m/%Y %H:%M', read_only=True)
+
     class Meta:
         model = User
         fields = ('id', 'username', 'password', 'birth_date', 'can_be_contacted', 'can_data_be_shared', 'created_time')
@@ -21,7 +22,6 @@ class UserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 {"birth_date": "Vous devez avoir au moins 15 ans pour vous inscrire."})
         return data
-
 
     def control_age(self, birth_date):
         # gestion age minimum
@@ -48,7 +48,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class PublicUserSerializer(serializers.ModelSerializer):
-        class Meta:
-            model = User
-            fields = ('id', 'username',)
-            read_only_fields = ('id', 'username',)
+    class Meta:
+        model = User
+        fields = ('id', 'username',)
+        read_only_fields = ('id', 'username',)

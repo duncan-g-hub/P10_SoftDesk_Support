@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -20,9 +19,12 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=100)),
                 ('description', models.TextField()),
-                ('type', models.CharField(choices=[('BCK', 'back-end'), ('FRT', 'front-end'), ('IOS', 'iOS'), ('ADR', 'Android')], max_length=3)),
+                ('type', models.CharField(
+                    choices=[('BCK', 'back-end'), ('FRT', 'front-end'), ('IOS', 'iOS'), ('ADR', 'Android')],
+                    max_length=3)),
                 ('created_time', models.DateTimeField(auto_now_add=True)),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='projects', to=settings.AUTH_USER_MODEL)),
+                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='projects',
+                                             to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(
@@ -30,8 +32,10 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_time', models.DateTimeField(auto_now_add=True)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='contributions', to=settings.AUTH_USER_MODEL)),
-                ('project', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='contributors', to='projects.project')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='contributions',
+                                           to=settings.AUTH_USER_MODEL)),
+                ('project', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='contributors',
+                                              to='projects.project')),
             ],
             options={
                 'unique_together': {('user', 'project')},

@@ -2,6 +2,7 @@ from rest_framework.permissions import BasePermission
 
 from projects.models import Project, Contributor
 
+
 class IsAuthorOrReadOnly(BasePermission):
     def has_object_permission(self, request, view, obj):
         # Lecture toujours autorisée

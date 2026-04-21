@@ -82,6 +82,7 @@ class ProjectDetailSerializer(serializers.ModelSerializer):
     author = UserSerializer(read_only=True)
     contributors = ContributorSerializer(many=True, read_only=True)
     issues = IssueListSerializer(many=True, read_only=True)
+
     class Meta:
         model = Project
         fields = ('id', 'name', 'description', 'type', 'created_time', 'author', 'contributors', 'issues')
