@@ -12,7 +12,7 @@ from projects.serializers import (ProjectListSerializer, ProjectDetailSerializer
 class ProjectViewSet(viewsets.ModelViewSet):
     serializer_class = ProjectListSerializer
     serializer_detail_class = ProjectDetailSerializer
-    permission_classes = [IsAuthenticated, IsAuthorOrReadOnly]
+    permission_classes = [IsAuthenticated, IsProjectContributor, IsAuthorOrReadOnly]
 
     def get_queryset(self):
         return Project.objects.all()
