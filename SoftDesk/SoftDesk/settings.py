@@ -104,11 +104,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Paris' # UTC+1 en hiver, UTC+2 en été (gère automatiquement le DST)
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = True # Django stocke en UTC en base, convertit à l'affichage
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
