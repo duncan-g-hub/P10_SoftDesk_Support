@@ -36,9 +36,9 @@ issue_router.register('comments', CommentViewSet, basename='comment')  # issue r
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
-    path('api/', include(project_router.urls)),
-    path('api/', include(issue_router.urls)),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/', include(router.urls)), # endpoints projects/ & users/
+    path('api/', include(project_router.urls)), # endpoints imbriqués projects/issues/ & projects/contributors
+    path('api/', include(issue_router.urls)), # endpoints imbriqués projects/issues/comments/
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'), # endpoint obtention token access et refresh
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'), # endpoint obtention token access à partir de token refresh
 ]
