@@ -38,7 +38,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
         Utilise le serializer complet (UserSerializer) pour les actions de
         détail et de création, et le serializer public (PublicUserSerializer)
-        pour les autres actions (notamment la liste).
+        pour les autres actions (liste).
 
         Returns:
             serializer: La classe de serializer à utiliser pour l'action courante.

@@ -31,7 +31,7 @@ class Contributor(models.Model):
     """Modèle représentant la relation entre un utilisateur et un projet.
 
     Un contributeur est un utilisateur ayant accès à un projet donné.
-    La contrainte d'unicité empêche qu'un même utilisateur soit ajouté
+    Unique_together empêche qu'un même utilisateur soit ajouté
     plusieurs fois comme contributeur sur le même projet.
 
     Attributes:
