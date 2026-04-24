@@ -125,7 +125,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 5,  # clé pour définir le nombre d'élément à afficher par page
 
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',  # remplacer AllowAny par IsAuthenticated pour gerer l'auth
+        'rest_framework.permissions.IsAuthenticated',  # gestion de l'auth
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework_simplejwt.authentication.JWTAuthentication',)
     # Authentification JWT
